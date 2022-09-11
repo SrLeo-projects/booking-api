@@ -5,6 +5,10 @@ Motor de Base de Datos utilizado: SQLite
 
 Ejecutar la aplicación con el siguiente comando: docker-compose up
 
+Para consultas en Postman que requieran autenticación, usar el request login:
+ - En el body indicar las credenciales (user, password)
+ - Copiar las el csrftoken y copiar en el header con la llave X-CSRFToken
+
 /api/rooms/
  - Get. Retorna todos los registros de habitaciones y permite el filtro mediante query string.
  - Se podría usar en una página de inicio y otra de habitaciones.
