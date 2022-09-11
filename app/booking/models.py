@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -11,6 +13,16 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def is_available(self, check_in, check_out):
+        check_in = datetime.strptime(check_in, '%Y-%m-%d').date()
+        check_out = datetime.strptime(check_out, '%Y-%m-%d').date()
+        
+        bookings = self.booking_set.all()
+        for booking in bookings:
+            if booking.check_in <= check_out and booking.check_out >= check_in:
+                return False
+        return True
 
 class Booking(models.Model):
     class Status(models.TextChoices):
@@ -30,6 +42,9 @@ class Booking(models.Model):
 
     def __str__(self):
         return f'{self.room} - {self.user}'
+    
+    def get_amount(self):
+        return self.room.price * (self.check_out - self.check_in).days
 
 class Payment(models.Model):
     class Method(models.TextChoices):
